@@ -52,9 +52,9 @@ public class IlikeServiceImp implements IlikeService {
 	}
 
 	@Transactional
-	public void deleteByUserId(User userId) {
+	public void deleteByUserIdAndPostId(User userId, Post postId) {
 
-		ilikeRepository.deleteByUserId(userId);
+		ilikeRepository.deleteByUserIdAndPostId(userId, postId);
 
 	}
 

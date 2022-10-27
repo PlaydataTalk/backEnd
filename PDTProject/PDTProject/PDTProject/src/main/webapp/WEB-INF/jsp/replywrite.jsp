@@ -18,16 +18,20 @@ div#insertBoard {
 	<h3>Write here</h3>
 	<hr>
 	<div id="Board">
-		<form action="write" method="POST">
+		<form action="reply" method="POST">
 			<table border="1">
 				<tr>
+					<th width="150">해당 글번호</th>
 					<th width="150">작성자</th>
 					<th width="150">img</th>
 					<th width="200">작성칸</th>
 				</tr>
 				<tr>
-					<td><input type="text" name="userId" value="${sessionScope.user.userId}" readonly></td>
-					<td><img src="${sessionScope.user.imgUrl}" name="userImg" width="100" height="120"></td>
+				<td><input type="text" name="postId" value="${postId.getPostId()}" readonly></td>
+					<td><input type="text" name="userId"
+						value="${sessionScope.user.userId}" readonly></td>
+					<td><img src="${sessionScope.user.imgUrl}" name="userImg"
+						width="100" height="120"></td>
 					<td align="center"><input type="text" width="500" name="text" /></td>
 				</tr>
 			</table>

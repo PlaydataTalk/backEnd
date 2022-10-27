@@ -11,6 +11,8 @@ public interface IlikeService {
 
 	void deleteLike(User userId, Post post);
 
-	void deleteByUserId(User userId);
+	//void deleteByUserId(User userId);
+	
+	void deleteByUserIdAndPostId(User userId, Post postId);
 
 }

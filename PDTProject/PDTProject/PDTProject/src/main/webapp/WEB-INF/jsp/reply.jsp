@@ -18,7 +18,7 @@
 
 <table border="1" width="700">
 <tr>
-	<th width="150">글 번호</th>
+	<th width="150">해당 글번호</th>
 	<th width="150">작성자</th>
 	<th width='300'>내용</th>
 </tr>
@@ -33,7 +33,11 @@
 
 </table>
 <br>
-<a href="gohome">홈으로 돌아가기</a>
+<a href="gohome?userId=${sessionScope.user.userId}">홈으로 돌아가기</a>
+<br>
+
+
+<a href="goreplywrite?postId=${postId}">댓글쓰기</a>
 <br>
 </center>
 </body>

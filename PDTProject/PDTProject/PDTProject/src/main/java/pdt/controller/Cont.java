@@ -3,7 +3,6 @@ package pdt.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,13 +39,13 @@ public class Cont {
 
 	@Autowired
 	IlikeServiceImp ilikeService;
-	
+
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	ReplyService replyService;
-	
+
 	@Autowired
 	ReplyRepository replyRepository;
 
@@ -54,7 +53,7 @@ public class Cont {
 	public String goHome(@ModelAttribute("user") User user, Model model) {
 		User findUser = userService.getUser(user);
 		System.out.println(model.getAttribute("user"));
-		System.out.println("********"+findUser);
+		System.out.println("********" + findUser);
 		List<Post> postList = postRepository.getPostList();
 		model.addAttribute("postList", postList);
 		return "home";
@@ -63,10 +62,10 @@ public class Cont {
 	@RequestMapping("/write")
 	public String write(@ModelAttribute("user") User user, Model model, @ModelAttribute("post") Post post) {
 		System.out.println(model.getAttribute("user"));
-		//User user1 = (User) model.getAttribute("user");
-		//System.out.println(user1.getUserId());
-		//System.out.println(user1.getImgUrl());
-		//System.out.println(user.getUserId());
+		// User user1 = (User) model.getAttribute("user");
+		// System.out.println(user1.getUserId());
+		// System.out.println(user1.getImgUrl());
+		// System.out.println(user.getUserId());
 		System.out.println(post.getUserId().getImgUrl());
 		System.out.println(post.getText());
 		System.out.println(post);
@@ -78,10 +77,10 @@ public class Cont {
 
 	@RequestMapping("/gowrite")
 	public String gowrite(@ModelAttribute("user") User user, Model model) {
-		//System.out.println(model.getAttribute("user"));
+		// System.out.println(model.getAttribute("user"));
 		return "write";
 	}
-	
+
 	@RequestMapping("/ilike")
 	public String addLike(@RequestParam("userId") User user, Model model, @RequestParam("postId") Post post) {
 		boolean a = ilikeService.addLike(user.getUserId(), post);
@@ -90,7 +89,7 @@ public class Cont {
 			postService.updateIlike(post.getPostId());
 			return "home";
 		} else {
-			ilikeService.deleteByUserId(user);
+			ilikeService.deleteByUserIdAndPostId(user, post);
 			postService.updateIlike2(post.getPostId());
 		}
 
@@ -98,20 +97,32 @@ public class Cont {
 
 	}
 
-	@RequestMapping("/ilike2")
-	public String addLike2(Model model, @RequestParam("postId") Post post) {
-		System.out.println(post.getPostId());
-		postService.updateIlike(post.getPostId());
-		return "home";
-	}
-	
 	@RequestMapping("/goreply")
-	public String goReply(@RequestParam("postId")Post post, Model model) {
+	public String goReply(@RequestParam("postId") Post post, Model model) {
 		Post findPost = postService.getPost(post);
-		System.out.println("********"+findPost);
+		model.addAttribute("postId", findPost.getPostId());
 		List<Reply> replyList = replyRepository.findByPostId(findPost);
 		model.addAttribute("replyList", replyList);
 		return "reply";
+	}
+
+	@RequestMapping("/reply")
+	public String reply(Model model, Reply reply) {
+		System.out.println(model.getAttribute("user"));
+		System.out.println(reply.getUserId());
+		System.out.println(reply.getPostId());
+		System.out.println(reply.getText());
+		System.out.println(reply);
+		replyService.insertReply(reply);
+		List<Post> postList = postRepository.getPostList();
+		model.addAttribute("postList", postList);
+		return "home";
+	}
+
+	@RequestMapping("/goreplywrite")
+	public String goReplyWrite(@ModelAttribute("postId")Post post, Model model) {
+
+		return "replywrite";
 	}
 
 }
