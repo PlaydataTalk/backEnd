@@ -12,8 +12,8 @@ public interface PostService {
 
 	void deletePost(Post post);
 
-	void updateIlike(Long postId);
+//	void updateIlike(Long postId);
 
-	void updateIlike2(Long postId);
- 
+//	void updateIlike2(Long postId);
+
 }

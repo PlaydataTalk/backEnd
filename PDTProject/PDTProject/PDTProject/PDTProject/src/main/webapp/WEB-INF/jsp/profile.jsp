@@ -24,7 +24,7 @@ div#insertBoard {
 		<form action="updateprofile" method="POST">
 			<table border="1">
 				<tr>
-					<th width="150">ID</th>
+					<th width="200">ID</th>
 					<th width="150">img</th>
 					<th width="200">name</th>
 				</tr>
@@ -53,6 +53,7 @@ div#insertBoard {
 			<th>좋아요</th>
 			<th>댓글</th>
 			<th>수정</th>
+			<th>삭제</th>
 		</tr>
 		<c:forEach var="postList" items="${postList}">
 			<tr>
@@ -68,7 +69,11 @@ div#insertBoard {
 				<td><a
 					href="ilike?userId=${sessionScope.user.userId}&postId=${postList.postId}">좋아요</a></td>
 				<td><a href="goreply?postId=${postList.postId}">댓글보기</a></td>
+				
+				<c:if test="${sessionScope.user.userId == postList.userId.getUserId()}">
 				<td><a href="goupdatepost?postId=${postList.postId}">수정하기</a></td>
+				<td><a href="deletepost?postId=${postList.postId}&userId=${sessionScope.user.userId}">삭제하기</a></td>
+				</c:if>
 			</tr>
 		</c:forEach>
 	</table>

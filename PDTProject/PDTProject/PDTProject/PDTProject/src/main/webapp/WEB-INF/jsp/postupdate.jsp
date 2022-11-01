@@ -52,7 +52,9 @@
 					<td><a href="goreply?postId=${post.postId}">댓글보기</a></td>
 				</tr>
 			</table>
+			<c:if test="${sessionScope.user.userId == post.userId.getUserId()}">
 			<button type="submit" class="btn btn-primary">작성</button>
+			</c:if>
 		</form>
 		<br> <a href="gowrite">게시글 등록</a> <br> <a href="logout">로그아웃</a>
 	</center>

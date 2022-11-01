@@ -1,15 +1,20 @@
 package pdt.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -31,7 +36,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
+//@ToString
 @DynamicInsert
 @DynamicUpdate
 @Transactional
@@ -54,11 +59,36 @@ public class Post {
 
 	@LastModifiedDate
 	private LocalDateTime updateDate;
-
+	
 	@Column(nullable = true)
 	private String keyword;
+
+	@Column(nullable = true)
+	private String keyword1;
+	
+	@Column(nullable = true)
+	private String keyword2;
+	
+	@Column(nullable = true)
+	private String keyword3;
 	
 	@ColumnDefault("0")
-	private Long likePost;
+	private Long likeCount;
+	
+	@OneToMany(
+	        mappedBy = "replyId",
+	        fetch = FetchType.LAZY,
+	        cascade = CascadeType.ALL,
+	        orphanRemoval = true
+	    )
+	private List<Reply> reply = new ArrayList<>();
+	
+	@OneToMany(
+	        mappedBy = "likeId",
+	        fetch = FetchType.LAZY,
+	        cascade = CascadeType.ALL,
+	        orphanRemoval = true
+	    )
+	private List<Ilike> ilike = new ArrayList<>();
 
 }

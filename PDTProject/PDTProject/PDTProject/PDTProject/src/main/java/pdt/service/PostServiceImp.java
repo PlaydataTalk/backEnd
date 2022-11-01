@@ -38,7 +38,9 @@ public class PostServiceImp implements PostService {
 		Post findPost = postRepo.findById(post.getPostId()).get();
 
 		findPost.setText(post.getText());
-		findPost.setKeyword(post.getKeyword());
+		findPost.setKeyword1(post.getKeyword1());
+		findPost.setKeyword2(post.getKeyword2());
+		findPost.setKeyword3(post.getKeyword3());
 		postRepo.save(findPost);
 	}
 	@Transactional
@@ -46,13 +48,13 @@ public class PostServiceImp implements PostService {
 		postRepo.deleteById(post.getPostId());
 	}
 	
-	@Transactional
-	public void updateIlike(Long postId) {
-		postRepo.updateIlike(postId);
-	}
-	@Transactional
-	public void updateIlike2(Long postId) {
-		postRepo.updateIlike2(postId);
-	}
+//	@Transactional
+//	public void updateIlike(Long postId) {
+//		postRepo.updateIlike(postId);
+//	}
+//	@Transactional
+//	public void updateIlike2(Long postId) {
+//		postRepo.updateIlike2(postId);
+//	}
 
 }

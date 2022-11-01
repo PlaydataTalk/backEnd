@@ -1,6 +1,8 @@
 package pdt.entity;
 
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +24,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
+//@ToString
 @Transactional
 @Entity
 public class Ilike {
@@ -31,11 +33,11 @@ public class Ilike {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long likeId;
 	
-	@ManyToOne(targetEntity = User.class)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User userId;
 	
-	@ManyToOne(targetEntity = Post.class)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_id")
 	private Post postId;
 	

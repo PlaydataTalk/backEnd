@@ -2,11 +2,11 @@ package pdt.dto;
 
 import lombok.*;
 
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-@ToString
 public class UserDTO {
 
 	private String userId;

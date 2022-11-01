@@ -1,11 +1,15 @@
 package pdt.entity;
 
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +25,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
+//@ToString
 @Transactional
 @Entity
 public class Reply {
@@ -30,11 +34,11 @@ public class Reply {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long replyId;
 	
-	@ManyToOne(targetEntity = User.class)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User userId;
 	
-	@ManyToOne(targetEntity = Post.class)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "post_id")
 	private Post postId;
 	

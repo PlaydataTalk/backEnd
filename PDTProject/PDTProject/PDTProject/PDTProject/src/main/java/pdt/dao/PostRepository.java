@@ -20,14 +20,19 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	@Query("select p from Post p where p.userId = :id")
 	public List<Post> getPostListWithUserId(@Param("id") User userId);
 
-	@Transactional
-	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("update Post p set p.likePost = p.likePost + 1 where p.postId = :id")
-	public void updateIlike(@Param("id") Long postId);
+//	@Transactional
+//	@Modifying(clearAutomatically = true, flushAutomatically = true)
+//	@Query("update Post p set p.likePost = p.likePost + 1 where p.postId = :id")
+//	public void updateIlike(@Param("id") Long postId);
 
+//	@Transactional
+//	@Modifying(clearAutomatically = true, flushAutomatically = true)
+//	@Query("update Post p set p.likePost = p.likePost - 1 where p.postId = :id")
+//	public void updateIlike2(@Param("id") Long postId);
+	
 	@Transactional
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("update Post p set p.likePost = p.likePost - 1 where p.postId = :id")
-	public void updateIlike2(@Param("id") Long postId);
+	@Query(value="update post set like_count = (select count(*) from ilike where post_id=:id) where post_id=:id", nativeQuery = true)
+	public void countLike(@Param("id") Long postId);
 
 }

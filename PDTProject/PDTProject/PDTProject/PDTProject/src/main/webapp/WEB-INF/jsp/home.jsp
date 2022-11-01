@@ -27,7 +27,9 @@
 	<th width='300'>내용</th>
 	<th width="100">작성일</th>
 	<th width="100">수정일</th>
-	<th width="150">키워드</th>
+	<th width="150">키워드1</th>
+	<th width="150">키워드2</th>
+	<th width="150">키워드3</th>
 	<th width="100">로그인 세션정보</th>
 	<th>좋아요</th>
 	<th>댓글</th>
@@ -42,7 +44,9 @@
 		<td align="left">${postList.text}</td>
 		<td>${postList.createDate}</td>
 		<td>${postList.updateDate}</td>
-		<td>${postList.keyword}</td>
+		<td>${postList.keyword1}</td>
+		<td>${postList.keyword2}</td>
+		<td>${postList.keyword3}</td>
 		<td>${sessionScope.user.userId}</td>
 		<td><a href="ilike?userId=${sessionScope.user.userId}&postId=${postList.postId}">좋아요</a></td>
 		<td><a href="goreply?postId=${postList.postId}">댓글보기</a></td>

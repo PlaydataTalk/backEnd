@@ -1,6 +1,7 @@
 package pdt.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,7 +52,7 @@ public class Cont {
 
 	@RequestMapping("/gohome")
 	public String goHome(@ModelAttribute("user") User user, Model model) {
-		//User findUser = userService.getUser(user);
+		// User findUser = userService.getUser(user);
 		List<Post> postList = postRepository.getPostList();
 		model.addAttribute("postList", postList);
 		return "home";
@@ -59,14 +60,23 @@ public class Cont {
 
 	@RequestMapping("/write")
 	public String write(@ModelAttribute("user") User user, Model model, @ModelAttribute("post") Post post) {
-		System.out.println(model.getAttribute("user"));
-		// User user1 = (User) model.getAttribute("user");
-		// System.out.println(user1.getUserId());
-		// System.out.println(user1.getImgUrl());
-		// System.out.println(user.getUserId());
-		System.out.println(post.getUserId().getImgUrl());
-		System.out.println(post.getText());
-		System.out.println(post);
+//		System.out.println(model.getAttribute("user"));
+//		User user1 = (User) model.getAttribute("user");
+//		System.out.println(user1.getUserId());
+//		System.out.println(user1.getImgUrl());
+//		System.out.println(user.getUserId());
+//		System.out.println(post.getUserId().getImgUrl());
+//		System.out.println(post.getText());
+//		System.out.println(post);
+		String[] arr = post.getKeyword().split(", ");
+		
+		System.out.println(arr[0]);
+		System.out.println(arr[1]);
+		System.out.println(arr[2]);
+		post.setKeyword1(arr[0]);
+		post.setKeyword2(arr[1]);
+		post.setKeyword3(arr[2]);
+		
 		postService.insertPost(post);
 		List<Post> postList = postRepository.getPostList();
 		model.addAttribute("postList", postList);
@@ -84,11 +94,11 @@ public class Cont {
 		boolean a = ilikeService.addLike(user.getUserId(), post);
 		System.out.println(a);
 		if (a) {
-			postService.updateIlike(post.getPostId());
+			postRepository.countLike(post.getPostId());
 			return "home";
 		} else {
 			ilikeService.deleteByUserIdAndPostId(user, post);
-			postService.updateIlike2(post.getPostId());
+			postRepository.countLike(post.getPostId());
 		}
 
 		return "home";
@@ -106,11 +116,11 @@ public class Cont {
 
 	@RequestMapping("/reply")
 	public String reply(Model model, Reply reply) {
-		System.out.println(model.getAttribute("user"));
-		System.out.println(reply.getUserId());
-		System.out.println(reply.getPostId());
-		System.out.println(reply.getText());
-		System.out.println(reply);
+//		System.out.println(model.getAttribute("user"));
+//		System.out.println(reply.getUserId());
+//		System.out.println(reply.getPostId());
+//		System.out.println(reply.getText());
+//		System.out.println(reply);
 		replyService.insertReply(reply);
 		List<Post> postList = postRepository.getPostList();
 		model.addAttribute("postList", postList);
@@ -131,7 +141,7 @@ public class Cont {
 		model.addAttribute("postList", postList);
 		return "profile";
 	}
-	
+
 	@RequestMapping("/goprofile")
 	public String goProfile(@RequestParam("user") User user, Model model) {
 		User findUser = userService.getUser(user);
@@ -140,23 +150,22 @@ public class Cont {
 		model.addAttribute("postList", postList);
 		return "profile";
 	}
-	
+
 	@RequestMapping("/updateprofile")
 	public String updateProfile(User user, Model model) {
-		System.out.println("***************************"+user);
+		System.out.println(user);
 		userService.updateUser(user);
 		model.addAttribute("user", userService.getUser(user));
 		return "profile";
 	}
-	
+
 	@RequestMapping("/goupdatepost")
 	public String goUpdatePost(@RequestParam("postId") Post post, Model model) {
 		Post findPost = postService.getPost(post);
-		System.out.println("*************"+findPost);
 		model.addAttribute("post", findPost);
 		return "postupdate";
 	}
-	
+
 	@RequestMapping("/updatepost")
 	public String updatePost(Post post, Model model) {
 		System.out.println(post);
@@ -164,6 +173,16 @@ public class Cont {
 		User findUser = userService.getUser(post.getUserId());
 		System.out.println(findUser);
 		List<Post> postList = postRepository.getPostListWithUserId(findUser);
+		model.addAttribute("postList", postList);
+		return "profile";
+	}
+	
+	@RequestMapping("/deletepost")
+	public String deletePost(Post post, Model model, User user) {
+		System.out.println(post);
+		postService.deletePost(post);
+		System.out.println(user);
+		List<Post> postList = postRepository.getPostListWithUserId(user);
 		model.addAttribute("postList", postList);
 		return "profile";
 	}

@@ -2,11 +2,10 @@ package pdt.dto;
 
 import lombok.*;
 
-@NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-@ToString
 public class PostDTO {
 
 	private Long postId;
