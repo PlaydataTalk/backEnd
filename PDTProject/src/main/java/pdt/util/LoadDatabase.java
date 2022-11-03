@@ -32,8 +32,8 @@ public class LoadDatabase {
 
 		return args -> {
 			
-			log.info("Preloading " + repository.save(User.builder().userId("abc@gmail.com").pw("1234").name("유재석").imgUrl("MrYou.png").build()));
-			log.info("Preloading " + repository.save(User.builder().userId("efg@naver.com").pw("1234").name("백종원").imgUrl("MrBaek.jpg").build()));
+			log.info("Preloading " + repository.save(User.builder().userId("abc@gmail.com").name("유재석").imgUrl("MrYou.png").build()));
+			log.info("Preloading " + repository.save(User.builder().userId("efg@naver.com").name("백종원").imgUrl("MrBaek.jpg").build()));
 		};
 	}
 

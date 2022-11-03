@@ -19,7 +19,7 @@ public class LoginController {
 	public String login(User user, Model model) {
 		User findUser = userService.getUser(user);
 
-		if (findUser != null && findUser.getPw().equals(user.getPw())) {
+		if (findUser != null) {
 			model.addAttribute("user", findUser);
 			return "forward:gohome";
 		} else {

@@ -37,8 +37,8 @@ public class User {
 	@Column(nullable = false)
 	private String userId;
 	
-	@Column(nullable = false)
-	private String pw;
+	//@Column(nullable = false)
+	//private String pw;
 
 	@Column(nullable = false)
 	private String name;

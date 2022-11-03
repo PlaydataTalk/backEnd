@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+
 import pdt.dao.IlikeRepository;
 import pdt.dao.PostRepository;
 import pdt.dao.ReplyRepository;
@@ -69,9 +71,10 @@ public class RestCont {
 
 	@RequestMapping("/getuserinform")
 	public User getUser(@RequestParam String userId) throws InterruptedException, ExecutionException {
+		
 		User a = firebaseService.getUserDetails(userId);
 		userService.insertUser(a);
-		System.out.println(a);
+		
 		return a;
 	}
 
@@ -81,26 +84,7 @@ public class RestCont {
 		return postRepository.getPostList();
 	}
 
-//	@RequestMapping("/publish")
-//	public List<Post> publish(Post post) {
-//
-//		postService.insertPost(post);
-//
-//		return postRepository.getPostList();
-//	}
 
-//	@RequestMapping(value = "/logIn", method = RequestMethod.POST)
-//	public String login(User user, Model model) {
-//		User findUser = userService.getUser(user);
-//
-//		if (findUser != null && findUser.getPw().equals(user.getPw())) {
-//			model.addAttribute("user", findUser);
-//			return "forward:gohome";
-//		} else {
-//			return "redirect:login.html";
-//		}
-//	}
-//
 //	@GetMapping("/logout")
 //	public String logout(SessionStatus status) {
 //		status.setComplete();
@@ -109,8 +93,9 @@ public class RestCont {
 
 	@RequestMapping("/gohome")
 	public List<Post> goHome(@ModelAttribute("user") User user, Model model) {
+		
 		List<Post> postList = postRepository.getPostList();
-		//model.addAttribute("postList", postList);
+
 		return postList;
 	}
 
@@ -124,8 +109,8 @@ public class RestCont {
 		postService.insertPost(post);
 		List<Post> postList = postRepository.getPostList();
 		return postList;
-		//model.addAttribute("postList", postList);
-		
+		// model.addAttribute("postList", postList);
+
 	}
 
 //	@RequestMapping("/gowrite")
@@ -140,7 +125,7 @@ public class RestCont {
 		System.out.println(a);
 		if (a) {
 			postRepository.countLike(post.getPostId());
-			
+
 			return postRepository.returnLike(post.getPostId());
 		} else {
 			ilikeService.deleteByUserIdAndPostId(user, post);
@@ -152,23 +137,19 @@ public class RestCont {
 
 	@RequestMapping("/goreply")
 	public List<Reply> goReply(@RequestParam("postId") Post post, Model model) {
+		
 		Post findPost = postService.getPost(post);
-		model.addAttribute("postId", findPost.getPostId());
 		List<Reply> replyList = replyRepository.findByPostId(findPost);
-		//model.addAttribute("replyList", replyList);
+
 		return replyList;
 	}
 
 	@RequestMapping("/reply")
 	public List<Post> reply(Model model, Reply reply) {
-//		System.out.println(model.getAttribute("user"));
-//		System.out.println(reply.getUserId());
-//		System.out.println(reply.getPostId());
-//		System.out.println(reply.getText());
-//		System.out.println(reply);
+
 		replyService.insertReply(reply);
 		List<Post> postList = postRepository.getPostList();
-		//model.addAttribute("postList", postList);
+
 		return postList;
 	}
 
@@ -180,61 +161,63 @@ public class RestCont {
 
 	@RequestMapping("/getuser")
 	public List<Post> getUser(@RequestParam("user") User user, Model model) {
+		
 		User findUser = userService.getUser(user);
-		//model.addAttribute("user", findUser);
 		List<Post> postList = postRepository.getPostListWithUserId(findUser);
-		//model.addAttribute("postList", postList);
+		
 		return postList;
 	}
 
 	@RequestMapping("/goprofile")
 	public List<Post> goProfile(@RequestParam("user") User user, Model model) {
+		
 		User findUser = userService.getUser(user);
-		model.addAttribute("user", findUser);
 		List<Post> postList = postRepository.getPostListWithUserId(findUser);
-		model.addAttribute("postList", postList);
+		
 		return postList;
 	}
 
 	@RequestMapping("/updateprofile")
 	public User updateProfile(User user, Model model) {
-		System.out.println(user);
+		
 		userService.updateUser(user);
 		User findUser = userService.getUser(user);
-		//model.addAttribute("user", userService.getUser(user));
+
 		return findUser;
 	}
 
 	@RequestMapping("/goupdatepost")
 	public Post goUpdatePost(@RequestParam("postId") Post post, Model model) {
+		
 		Post findPost = postService.getPost(post);
 		model.addAttribute("post", findPost);
+		
 		return findPost;
 	}
 
 	@RequestMapping("/updatepost")
 	public List<Post> updatePost(Post post, Model model) {
+		
 		postService.updatePost(post);
 		User findUser = userService.getUser(post.getUserId());
 		List<Post> postList = postRepository.getPostListWithUserId(findUser);
-		//model.addAttribute("postList", postList);
+
 		return postList;
 	}
 
 	@RequestMapping("/deletepost")
 	public List<Post> deletePost(Post post, Model model, User user) {
-		System.out.println(post);
+		
 		postService.deletePost(post);
-		System.out.println(user);
 		List<Post> postList = postRepository.getPostListWithUserId(user);
-		//model.addAttribute("postList", postList);
+		
 		return postList;
 	}
 
-//	@RequestMapping("/getalluser")
-//	public List<User> getAllUser() throws InterruptedException, ExecutionException {
-//		List<User> listUser = firebaseService.getUserDetails();
-//		return listUser;
-//	}
+	@RequestMapping("/getalluser")
+	public void getAllUser() throws InterruptedException, ExecutionException {
+		firebaseService.getAllUser();
+
+	}
 
 }
