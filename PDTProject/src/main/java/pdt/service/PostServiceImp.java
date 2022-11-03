@@ -1,5 +1,7 @@
 package pdt.service;
 
+import java.util.List;
+
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,10 @@ public class PostServiceImp implements PostService {
 	@Autowired
 	private PostRepository postRepo;
 
-	// public List<Post> getPostList(){};
-	// List<Post> postList = (List<Post>) postRepo.findAll();
-	// return postList;
+	public List<Post> getPostList() {
+		List<Post> postList = (List<Post>) postRepo.findAll();
+		return postList;
+	}
 
 	public void insertPost(Post post) {
 		postRepo.save(post);
@@ -29,6 +32,7 @@ public class PostServiceImp implements PostService {
 	public Post getPost(Post post) {
 		return postRepo.findById(post.getPostId()).get();
 	}
+
 	public void updatePost(Post post) {
 		/*
 		 * Board 객체는 영속성 context 영역에 저장 영속성 영역의 객체 데이터 저장 후 save - 새로운 데이터 갱신 확인 후에
@@ -43,18 +47,10 @@ public class PostServiceImp implements PostService {
 		findPost.setKeyword3(post.getKeyword3());
 		postRepo.save(findPost);
 	}
+
 	@Transactional
 	public void deletePost(Post post) {
 		postRepo.deleteById(post.getPostId());
 	}
-	
-//	@Transactional
-//	public void updateIlike(Long postId) {
-//		postRepo.updateIlike(postId);
-//	}
-//	@Transactional
-//	public void updateIlike2(Long postId) {
-//		postRepo.updateIlike2(postId);
-//	}
 
 }

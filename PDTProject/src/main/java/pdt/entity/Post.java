@@ -24,12 +24,13 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
@@ -47,7 +48,7 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long postId;
 
-	@ManyToOne(targetEntity = User.class)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User userId;
 
@@ -76,19 +77,21 @@ public class Post {
 	private Long likeCount;
 	
 	@OneToMany(
-	        mappedBy = "replyId",
+	        mappedBy = "postId",
 	        fetch = FetchType.LAZY,
 	        cascade = CascadeType.ALL,
 	        orphanRemoval = true
 	    )
+	@JsonIgnore
 	private List<Reply> reply = new ArrayList<>();
 	
 	@OneToMany(
-	        mappedBy = "likeId",
+	        mappedBy = "postId",
 	        fetch = FetchType.LAZY,
 	        cascade = CascadeType.ALL,
 	        orphanRemoval = true
 	    )
+	@JsonIgnore
 	private List<Ilike> ilike = new ArrayList<>();
 
 }

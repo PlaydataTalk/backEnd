@@ -78,13 +78,6 @@ public class RestCont {
 		return a;
 	}
 
-	@RequestMapping("/home")
-	public List<Post> home() {
-
-		return postRepository.getPostList();
-	}
-
-
 //	@GetMapping("/logout")
 //	public String logout(SessionStatus status) {
 //		status.setComplete();
@@ -92,9 +85,10 @@ public class RestCont {
 //	}
 
 	@RequestMapping("/gohome")
-	public List<Post> goHome(@ModelAttribute("user") User user, Model model) {
+	public List<Post> goHome(){//@ModelAttribute("user") User user, Model model) {
 		
 		List<Post> postList = postRepository.getPostList();
+		//List<Post> postList = postService.getPostList();
 
 		return postList;
 	}

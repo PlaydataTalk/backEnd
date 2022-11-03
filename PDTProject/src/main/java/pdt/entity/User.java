@@ -10,10 +10,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,27 +50,30 @@ public class User {
 	private String imgUrl;
 	
 	@OneToMany(
-	        mappedBy = "postId",
+	        mappedBy = "userId",
 	        fetch = FetchType.LAZY,
 	        cascade = CascadeType.ALL,
 	        orphanRemoval = true
 	    )
+	@JsonIgnore
 	private List<Post> post = new ArrayList<>();
 	
 	@OneToMany(
-	        mappedBy = "likeId",
-	        fetch = FetchType.LAZY,
+	        mappedBy = "userId",
+	       fetch = FetchType.LAZY,
 	        cascade = CascadeType.ALL,
 	        orphanRemoval = true
 	    )
+	@JsonIgnore
 	private List<Ilike> ilike = new ArrayList<>();
 	
 	@OneToMany(
-	        mappedBy = "replyId",
+	        mappedBy = "userId",
 	        fetch = FetchType.LAZY,
 	        cascade = CascadeType.ALL,
 	        orphanRemoval = true
 	    )
+	@JsonIgnore
 	private List<Reply> reply = new ArrayList<>();
 
 }

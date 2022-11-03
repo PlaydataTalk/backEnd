@@ -34,12 +34,12 @@ public class Reply {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long replyId;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="user_id")
 	private User userId;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "post_id")
+	@JoinColumn(name="post_id")
 	private Post postId;
 	
 	private String text;

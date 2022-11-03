@@ -33,12 +33,12 @@ public class Ilike {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long likeId;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="user_id")
 	private User userId;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "post_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="post_id")
 	private Post postId;
 	
 	public Ilike(User userId, Post postId) {
