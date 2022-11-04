@@ -11,6 +11,10 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
+import com.google.firebase.auth.UserRecord;
 import com.google.firebase.cloud.FirestoreClient;
 
 import pdt.entity.User;
@@ -26,10 +30,10 @@ public class FirebaseService {
 		return collectionApiFuture.get().getUpdateTime().toString();
 	}
 
-	public User getUserDetails(String userId) throws InterruptedException, ExecutionException {
+	public User getUserDetails(String userId) throws InterruptedException, ExecutionException, FirebaseAuthException {
 
 		Firestore dbFirestore = FirestoreClient.getFirestore();
-		DocumentReference documentReference = dbFirestore.collection("user").document(userId);
+		DocumentReference documentReference = dbFirestore.collection("users").document(userId);
 		ApiFuture<DocumentSnapshot> future = documentReference.get();
 
 		DocumentSnapshot document = future.get();
@@ -38,6 +42,15 @@ public class FirebaseService {
 
 		if (document.exists()) {
 			user = document.toObject(User.class);
+			
+			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(user.getIdToken());
+			String uid = decodedToken.getUid();
+			System.out.println(uid);
+
+			FirebaseAuth auth = FirebaseAuth.getInstance();
+			ApiFuture<UserRecord> fuser = auth.getUserByEmailAsync(userId);
+			System.out.println(fuser.toString());
+
 			return user;
 		} else {
 			return null;
@@ -57,5 +70,5 @@ public class FirebaseService {
 			System.out.println(document.getId() + " => " + document.toObject(User.class).toString());
 		}
 	}
-
+	
 }

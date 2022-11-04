@@ -49,6 +49,9 @@ public class User {
 	@Column(nullable = true)
 	private String imgUrl;
 	
+	@Column(nullable = true, columnDefinition = "LONGTEXT")
+	private String idToken;
+	
 	@OneToMany(
 	        mappedBy = "userId",
 	        fetch = FetchType.LAZY,

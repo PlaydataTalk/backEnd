@@ -35,9 +35,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	@Query(value="update post set like_count = (select count(*) from ilike where post_id=:id) where post_id=:id", nativeQuery = true)
 	public void countLike(@Param("id") Long postId);
 	
-	@Transactional
-	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query(value="select like_post from post where post_id=:id", nativeQuery = true)
+//	@Transactional
+//	@Modifying(clearAutomatically = true, flushAutomatically = true)
+	@Query(value="select like_count from post where post_id=:id", nativeQuery = true)
 	public Long returnLike(@Param("id") Long postId);
 
 }

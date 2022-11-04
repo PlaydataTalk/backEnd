@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.firebase.auth.FirebaseAuthException;
 
 import pdt.dao.IlikeRepository;
 import pdt.dao.PostRepository;
@@ -70,11 +71,12 @@ public class RestCont {
 	}
 
 	@RequestMapping("/getuserinform")
-	public User getUser(@RequestParam String userId) throws InterruptedException, ExecutionException {
-		
+	public User getUser(@RequestParam String userId)
+			throws InterruptedException, ExecutionException, FirebaseAuthException {
+
 		User a = firebaseService.getUserDetails(userId);
 		userService.insertUser(a);
-		
+
 		return a;
 	}
 
@@ -85,10 +87,10 @@ public class RestCont {
 //	}
 
 	@RequestMapping("/gohome")
-	public List<Post> goHome(){//@ModelAttribute("user") User user, Model model) {
-		
+	public List<Post> goHome() {// @ModelAttribute("user") User user, Model model) {
+
 		List<Post> postList = postRepository.getPostList();
-		//List<Post> postList = postService.getPostList();
+		// List<Post> postList = postService.getPostList();
 
 		return postList;
 	}
@@ -96,10 +98,22 @@ public class RestCont {
 	@RequestMapping("/write")
 	public List<Post> write(@ModelAttribute("user") User user, Model model, @ModelAttribute("post") Post post) {
 
-		String[] arr = post.getKeyword().split(", ");
-		post.setKeyword1(arr[0]);
-		post.setKeyword2(arr[1]);
-		post.setKeyword3(arr[2]);
+		if (post.getKeyword().length() != 0) {
+
+			String[] arr = post.getKeyword().split(",");
+			int a = arr.length;
+			if (a == 1) {
+				post.setKeyword1(arr[0]);
+			} else if (a == 2) {
+				post.setKeyword1(arr[0]);
+				post.setKeyword2(arr[1]);
+			} else {
+
+				post.setKeyword1(arr[0]);
+				post.setKeyword2(arr[1]);
+				post.setKeyword3(arr[2]);
+			}
+		}
 		postService.insertPost(post);
 		List<Post> postList = postRepository.getPostList();
 		return postList;
@@ -131,7 +145,7 @@ public class RestCont {
 
 	@RequestMapping("/goreply")
 	public List<Reply> goReply(@RequestParam("postId") Post post, Model model) {
-		
+
 		Post findPost = postService.getPost(post);
 		List<Reply> replyList = replyRepository.findByPostId(findPost);
 
@@ -155,25 +169,25 @@ public class RestCont {
 
 	@RequestMapping("/getuser")
 	public List<Post> getUser(@RequestParam("user") User user, Model model) {
-		
+
 		User findUser = userService.getUser(user);
 		List<Post> postList = postRepository.getPostListWithUserId(findUser);
-		
+
 		return postList;
 	}
 
 	@RequestMapping("/goprofile")
 	public List<Post> goProfile(@RequestParam("user") User user, Model model) {
-		
+
 		User findUser = userService.getUser(user);
 		List<Post> postList = postRepository.getPostListWithUserId(findUser);
-		
+
 		return postList;
 	}
 
 	@RequestMapping("/updateprofile")
 	public User updateProfile(User user, Model model) {
-		
+
 		userService.updateUser(user);
 		User findUser = userService.getUser(user);
 
@@ -182,16 +196,16 @@ public class RestCont {
 
 	@RequestMapping("/goupdatepost")
 	public Post goUpdatePost(@RequestParam("postId") Post post, Model model) {
-		
+
 		Post findPost = postService.getPost(post);
 		model.addAttribute("post", findPost);
-		
+
 		return findPost;
 	}
 
 	@RequestMapping("/updatepost")
 	public List<Post> updatePost(Post post, Model model) {
-		
+
 		postService.updatePost(post);
 		User findUser = userService.getUser(post.getUserId());
 		List<Post> postList = postRepository.getPostListWithUserId(findUser);
@@ -201,10 +215,10 @@ public class RestCont {
 
 	@RequestMapping("/deletepost")
 	public List<Post> deletePost(Post post, Model model, User user) {
-		
+
 		postService.deletePost(post);
 		List<Post> postList = postRepository.getPostListWithUserId(user);
-		
+
 		return postList;
 	}
 
